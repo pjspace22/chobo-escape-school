@@ -129,7 +129,7 @@
 - **웹 바로 열기:**
   - [3D 운전 연습](https://raw.githack.com/pjspace22/chobo-escape-school/main/web/plan-school-parking-sim-3d.html)
   - [홈 + 운전 카드](https://raw.githack.com/pjspace22/chobo-escape-school/main/web/plan-school-drive-cards-prototype.html)
-- **웹 조작:** 키보드 ← → 핸들, ↑ 가속, ↓/Space 브레이크, 깜빡이·기어는 화면 버튼
+- **웹 조작 (키보드):** ← → 핸들 · 스페이스 브레이크 · Q/E 깜빡이 · H 전조등 · J 상향등 · W 와이퍼 · D/R 기어 · C 시점 바꾸기 · Z/X 거울 · Backspace 처음부터. 화면 버튼으로도 조작할 수 있습니다
 - **오프라인으로 열 때:** 저장소를 받아 `web/` 안 HTML을 크롬으로 열어도 됩니다. three.js는 CDN에서 불러옵니다.
 - 두 APK와 웹은 **같은 웹 원본**에서 나옵니다. `tools/school_web/mk_assets.py`가 웹 원본을 앱 assets로 옮깁니다.
   - `PHOTOS = True`: 사진판(①)
