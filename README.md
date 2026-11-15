@@ -4,7 +4,7 @@
 
 - 팀: **동고동락** · 현대자동차그룹 차량용 앱 개발 공모전 출품작
 - 플랫폼: Pleos Connect (Android Automotive, API 34) · Kotlin
-- **APK:** [최적화(제출 기본)](apk/) · [3D 원본](apk/) · **웹 3D:** [바로 열기](https://raw.githack.com/pjspace22/chobo-escape-school/main/web/plan-school-parking-sim-3d.html) · **시연 영상:** [demo/](demo/) · **실행:** [심사위원 빠른 실행](#심사위원-빠른-실행-3단계)
+- **APK:** [최적화(제출 기본)](apk/) · [3D 원본](apk/) · **웹 3D:** [`web/`](web/) · **시연 영상:** [demo/](demo/) · **실행:** [심사위원 빠른 실행](#심사위원-빠른-실행-3단계)
 
 
 <img src="docs/images/01_home.png" width="860" alt="초보 탈출 학교 홈 화면">
@@ -126,11 +126,10 @@
 | **② 3D 원본 APK** | [`apk/동고동락_초보탈출학교_3D원본_release.apk`](apk/) | **실제 3D** (핸들·기어·브레이크로 운전) | 켬 (눌림·별·축하) | 실차 또는 빠른 기기에서 원래 경험 보기. 에뮬레이터에서는 끊김 |
 | **③ 웹 버전 (HTML)** | [`web/`](web/) | **실제 3D**, PC 브라우저에서 부드럽게 | 켬 | 설치 없이 3D 연습·운전 카드를 바로 체험 |
 
-- **웹 바로 열기:**
-  - [3D 운전 연습](https://raw.githack.com/pjspace22/chobo-escape-school/main/web/plan-school-parking-sim-3d.html)
-  - [홈 + 운전 카드](https://raw.githack.com/pjspace22/chobo-escape-school/main/web/plan-school-drive-cards-prototype.html)
+- **웹 여는 법:** 저장소를 받은 뒤 크롬으로 엽니다(인터넷 필요, three.js를 CDN에서 불러옴).
+  - 3D 운전 연습: `web/plan-school-parking-sim-3d.html`
+  - 홈 + 운전 카드: `web/plan-school-drive-cards-prototype.html`
 - **웹 조작 (키보드):** ← → 핸들 · 스페이스 브레이크 · Q/E 깜빡이 · H 전조등 · J 상향등 · W 와이퍼 · D/R 기어 · C 시점 바꾸기 · Z/X 거울 · Backspace 처음부터. 화면 버튼으로도 조작할 수 있습니다
-- **오프라인으로 열 때:** 저장소를 받아 `web/` 안 HTML을 크롬으로 열어도 됩니다. three.js는 CDN에서 불러옵니다.
 - 두 APK와 웹은 **같은 웹 원본**에서 나옵니다. `tools/school_web/mk_assets.py`가 웹 원본을 앱 assets로 옮깁니다.
   - `PHOTOS = True`: 사진판(①)
   - `PHOTOS = False`: 3D판(②)
@@ -216,7 +215,7 @@ flowchart TD
    ```bash
    adb install -r "apk/동고동락_초보탈출학교_release.apk"
    ```
-   움직이는 3D를 보려면 `apk/동고동락_초보탈출학교_3D원본_release.apk`를 설치합니다(에뮬레이터에서는 끊김). 또는 [웹 3D](https://raw.githack.com/pjspace22/chobo-escape-school/main/web/plan-school-parking-sim-3d.html)를 엽니다.
+   움직이는 3D를 보려면 `apk/동고동락_초보탈출학교_3D원본_release.apk`를 설치합니다(에뮬레이터에서는 끊김). 또는 `web/plan-school-parking-sim-3d.html`을 크롬으로 엽니다.
    앱 목록에서 **초보 탈출 학교**를 엽니다.
 3. **차량 값 바꿔 보기 (Virtual Console)**
    - `adb forward tcp:8088 tcp:8088` 후 브라우저에서 http://127.0.0.1:8088/ 을 엽니다.
