@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Pleos Starter</string>
+    <string name="title">Vehicle SDK 스타터</string>
+    <string name="subtitle">Virtual Console(http://127.0.0.1:8088)에서 차량 값을 바꾸면 아래 값이 실시간으로 바뀝니다.</string>
+    <string name="door_label">운전석 문 위치 (Door · ROW_1_LEFT)</string>
+    <string name="brake_label">브레이크 페달 (Brake)</string>
+    <string name="odometer_label">총 주행 거리 (Odometer)</string>
+    <string name="log_label">API 로그</string>
+    <string name="unknown">—</string>
+    <string name="door_toggle">문 열기/닫기</string>
+    <string name="refresh">다시 조회</string>
+</resources>

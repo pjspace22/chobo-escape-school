@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Pleos 차량 퍼미션: 실제로 쓰는 API의 최소 퍼미션만 선언 (승인되지 않은 퍼미션은 앱 심사 탈락 사유) -->
+    <!-- Door 조회·구독 -->
+    <uses-permission android:name="pleos.car.permission.CAR_DOORS" />
+    <!-- Door 제어(setDoorPosition). 문 열기/닫기 버튼을 안 쓰면 지우기 -->
+    <uses-permission android:name="pleos.car.permission.CONTROL_CAR_DOORS" />
+    <!-- Brake, Odometer, DrivingMode 조회·구독 -->
+    <uses-permission android:name="pleos.car.permission.CAR_DRIVE" />
+    <!-- 신호 점검 화면용 (2026-10-27 사람 확인). 제출 전에 실제로 쓰는 것만 남기기 -->
+    <!-- TurnSignal 조회·구독 -->
+    <uses-permission android:name="pleos.car.permission.CAR_LIGHTS" />
+    <!-- Seat(안전벨트) 조회·구독 -->
+    <uses-permission android:name="pleos.car.permission.CAR_SEATS" />
+    <!-- Window 조회·구독 -->
+    <uses-permission android:name="pleos.car.permission.CAR_WINDOWS" />
+    <!-- 공조 조회·구독 (김 서림 코치 F1용, 읽기만. 박현규 승인 2026-11-01) -->
+    <uses-permission android:name="pleos.car.permission.CAR_CLIMATE" />
+    <!-- 현재 위치: 기어 P 주정차 판정 (FusedLocation, 박현규 승인 2026-11-03) -->
+    <uses-permission android:name="pleos.car.permission.FUSED_LOCATION" />
+    <!-- 공영주차장 길 안내·대체 위치 (NaviHelper, 박현규 승인 2026-11-01) -->
+    <uses-permission android:name="pleos.car.permission.NAVI_ROUTE" />
+    <!-- 내비 위 코치 배너 (Android 알림, Pleos 전용 아님. plan-school-duo-screens.md 부록 D 현규 확정 2026-11-04) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- 내비를 앞에 띄워도 앱이 얼지 않게 (포그라운드 서비스 SchoolKeepAlive, 현규 확정 2026-11-03) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- 인터넷: 날씨 외부 서버(비 판정 보강)·초보끼리 점수 비교용 (Pleos 전용 아님, 현규 승인 2026-11-10 23:25) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Android Automotive OS 앱 -->
+    <uses-feature
+        android:name="android.hardware.type.automotive"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.landscape"
+        android:required="false" />
+
+    <application
+        android:allowBackup="false"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PleosStarter">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- 주행 중에도 화면을 띄울 수 있게 표시. 주행 중 사용성 기준은 Pleos 앱 심사 가이드 참고 -->
+            <meta-data
+                android:name="distractionOptimized"
+                android:value="true" />
+        </activity>
+
+        <!-- 개발용 신호 점검 화면. 앱 목록에 아이콘이 따로 생긴다. 제출 전에 지우거나 런처에서 빼기 -->
+        <activity
+            android:name=".signal.SignalMonitorActivity"
+            android:exported="true"
+            android:label="@string/signal_app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Virtual Console에서 기어 D(주행)로 바꿔도 화면이 막히지 않게 -->
+            <meta-data
+                android:name="distractionOptimized"
+                android:value="true" />
+        </activity>
+
+        <!-- 초보 탈출 학교: 주행 성적표·졸업 진도 -->
+        <activity
+            android:name=".school.SchoolActivity"
+            android:exported="true"
+            android:label="초보 탈출 학교">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="distractionOptimized"
+                android:value="true" />
+        </activity>
+        <!-- 초보 탈출 학교: 내비를 앞에 띄워도 코치·주행 기록이 멈추지 않게 붙잡아 두는 서비스 -->
+        <service
+            android:name=".school.SchoolKeepAlive"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="주행 중 다른 앱(내비)을 보는 동안 운전 코치·주행 기록 유지" />
+        </service>
+        <!-- 개발용 신호 확인(와이퍼·라이트). 런처에는 안 나오고 adb로 연다. 제출 전에 지우기 -->
+        <activity
+            android:name=".school.SignalProbeActivity"
+            android:exported="true">
+            <meta-data
+                android:name="distractionOptimized"
+                android:value="true" />
+        </activity>
+    </application>
+
+</manifest>

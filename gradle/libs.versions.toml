@@ -1,0 +1,24 @@
+# 버전은 Pleos Vehicle SDK Sample App 기준(AGP 8.8.2 / Gradle 8.10.2 / Kotlin 2.0.0 / JDK 17)에 맞춤
+[versions]
+agp = "8.8.2"
+kotlin = "2.0.0"
+pleosVehicle = "2.3.2"
+pleosTts = "3.3.1"
+pleosNavi = "3.0.5"
+pleosFused = "1.1.3"
+coreKtx = "1.13.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+
+[libraries]
+pleos-vehicle = { group = "ai.pleos.playground", name = "Vehicle", version.ref = "pleosVehicle" }
+pleos-tts = { group = "ai.pleos.playground", name = "TextToSpeech", version.ref = "pleosTts" }
+pleos-navi = { group = "ai.pleos.playground", name = "NaviHelper", version.ref = "pleosNavi" }
+pleos-fused = { group = "ai.pleos.playground", name = "FusedLocation", version.ref = "pleosFused" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

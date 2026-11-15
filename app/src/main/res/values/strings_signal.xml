@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 신호 점검 화면 전용 문자열. 공용 strings.xml과 충돌하지 않게 파일을 나눔 -->
+<resources>
+    <string name="signal_app_name">신호 점검</string>
+    <string name="signal_title">차량 신호 점검</string>
+    <string name="signal_subtitle">Virtual Console에서 값을 바꾸면 값과 갱신 횟수·간격이 바뀝니다. 간격은 변경 알림(Callback) 사이의 시간입니다.</string>
+    <string name="signal_events_label">해 보기: 운전 습관 이벤트</string>
+    <string name="signal_reset">횟수 초기화</string>
+
+    <string name="signal_steering">핸들 각도 (SteeringWheel)</string>
+    <string name="signal_turn">방향지시등 (TurnSignal)</string>
+    <string name="signal_gear">기어 (Gear)</string>
+    <string name="signal_brake">브레이크 페달 (Brake)</string>
+    <string name="signal_odometer">총 주행 거리 (Odometer)</string>
+    <string name="signal_belt">운전석 안전벨트 (Seat)</string>
+    <string name="signal_window">운전석 창문 (Window)</string>
+    <string name="signal_door">운전석 문 (Door)</string>
+</resources>

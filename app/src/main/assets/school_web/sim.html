@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280, user-scalable=no">
+<title>연습 맵</title>
+<!-- 앱용: 웹 3D 연습(plan-school-parking-sim-3d.html)의 맵을 사진으로 보여 준다. tools/school_web/mk_assets.py가 만듦 -->
+<style>
+:root{--bg:#EEF1F5;--sf:#fff;--tx:#141A22;--sub:#4A5564;--pr:#2E6BF6;--prs:#E8EFFE;--f:"Malgun Gothic",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:var(--f);color:var(--tx);height:100vh;overflow:hidden}
+#car{height:100vh;display:grid;grid-template-columns:1fr 360px}
+#view{position:relative;min-width:0;background:#D3D8DF}
+#view img{display:block;width:100%;height:100%;object-fit:cover}
+.side{background:var(--sf);padding:22px 24px;display:flex;flex-direction:column;gap:14px;min-width:0;overflow-y:auto}
+.back{font-size:17px;font-weight:600;color:var(--pr);text-decoration:none}
+.eb{font-size:14px;font-weight:600;letter-spacing:1.2px;color:var(--pr)}
+h1{font-size:28px;margin:0}
+.goal{font-size:18px;color:var(--tx);line-height:1.55;margin:0}
+.note{font-size:15px;color:var(--sub);line-height:1.5;margin:0;background:var(--bg);border-radius:12px;padding:12px 14px}
+.row{display:flex;gap:10px;margin-top:auto}
+.btn{flex:1;border:0;border-radius:14px;padding:14px 10px;font-size:17px;font-weight:600;font-family:inherit;background:var(--bg);color:var(--tx)}
+.btn:disabled{opacity:.35}
+.btn:focus-visible{outline:3px solid var(--pr);outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="car">
+  <div id="view"><img id="ph" alt=""></div>
+  <div class="side">
+    <a class="back" href="cards.html" onclick="if(window.Android){Android.home();return false}">← 홈</a>
+    <span class="eb" id="eb"></span>
+    <h1 id="ti"></h1>
+    <p class="goal" id="goal"></p>
+    <p class="note">사진으로 보는 연습 맵이에요. 실제 차에서 운전할 때 이 장면을 떠올려 보세요.</p>
+    <div class="row"><button class="btn" id="prev">◀ 이전 맵</button><button class="btn" id="next">다음 맵 ▶</button></div>
+  </div>
+</div>
+<script>
+const MAPS={
+ park_p:{t:1,title:'세우고 P 넣기',tpl:'lot',goal:'파란 칸에 뒤로 넣고, 브레이크를 밟은 채 멈춰요.'},
+ signal_on:{t:1,title:'꺾기 전에 깜빡이',tpl:'cross',turn:'R',goal:'노란 선(회전 30m 앞 표시)을 지나기 전에 오른쪽 깜빡이를 켜고 우회전해요.'},
+ signal_off:{t:1,title:'돌았으면 끄기',tpl:'cross',turn:'R',startSignal:'R',goal:'깜빡이가 켜진 채 출발해요. 우회전을 마치면 10m 안에 꺼요.'},
+ headlight:{t:1,title:'해 지면 전조등',tpl:'road',env:'night',goal:'밤길이에요. 출발 20m 안에 전조등을 켜고 끝까지 가요.'},
+ rain_light:{t:1,title:'비 오면 낮에도 전조등',tpl:'road',env:'rain',goal:'비가 와요. 20m 안에 와이퍼와 전조등을 켜고 끝까지 가요.'},
+ hw_stop:{t:1,title:'출구 놓쳐도 멈추지 않기',tpl:'hw',start:'missed',goal:'출구를 막 지나쳤어요. 멈추거나 후진하지 말고 앞으로 계속 가요.'},
+ right_red:{t:2,title:'우회전 빨간불 멈춤',tpl:'cross',turn:'R',red:true,goal:'앞 신호가 빨간불이에요. 정지선 앞에서 완전히 멈춘 뒤 우회전해요.'},
+ left_wait:{t:2,title:'좌회전 기다릴 때도',tpl:'cross',turn:'L',oncoming:true,goal:'마주 오는 차가 지나갈 때까지 교차로에서 기다렸다가 좌회전해요. 기다리는 동안 왼쪽 깜빡이를 켜 둬요.'},
+ right_lane:{t:2,title:'우회전은 미리 오른쪽 차로',tpl:'cross',turn:'R',startLane:'in',goal:'안쪽 차로에서 출발해요. 정지선 전에 맨 오른쪽 차로로 옮긴 뒤 우회전해요.'},
+ high_beam:{t:2,title:'마주 오면 상향등 끄기',tpl:'road',env:'night',twoWay:true,startHigh:true,goal:'상향등이 켜져 있어요. 마주 오는 차가 40m 안에 들어오기 전에 꺼요.'},
+ interior:{t:2,title:'달릴 땐 실내등 끄기',tpl:'road',env:'night',startInterior:true,startLight:true,goal:'실내등이 켜져 있어요. 출발 10m 안에 꺼요.'},
+ fog:{t:2,title:'김 서림 바로 없애기',tpl:'road',env:'fog',goal:'앞유리에 김이 서렸어요. 25m 안에 김 서림 제거를 켜요.'},
+ rain:{t:2,title:'비 오면 20% 천천히',tpl:'road',env:'rain',slowZone:true,startLight:true,startWiper:true,goal:'파란 젖은 구간에서는 브레이크를 짧게 여러 번 밟아 평소보다 20% 넘게 천천히 가요. (멈춰 있던 시간은 빼고 재요)'},
+ exit_lane:{t:3,title:'출구는 미리 오른쪽',tpl:'hw',start:'left',goal:'맨 왼쪽 차로예요. 오른쪽 깜빡이를 켜고 한 차로씩 옮겨 오른쪽 출구로 나가요.'},
+ merge:{t:3,title:'합류 속도 맞추기',tpl:'hw',start:'merge',goal:'가속차로가 끝나기 전에 본선 차 사이로 들어가요. 60m 지점부터는 브레이크를 밟지 않아요.'},
+ cruise:{t:3,title:'크루즈 중에도 앞 보기',tpl:'road',lead:true,goal:'앞차가 갑자기 서요. 앞을 보고 바로 브레이크를 밟아요.'},
+ one_lane:{t:4,title:'한 번에 한 차로',tpl:'road',startLane:2,goalLane:0,goal:'맨 오른쪽에서 맨 왼쪽 차로로 가요. 깜빡이를 켜고, 한 차로 옮기고 4초 넘게 지난 뒤 다음 차로로.'},
+ early_slow:{t:4,title:'회전 앞 미리 줄이기',tpl:'cross',turn:'R',early:true,goal:'노란 선부터 정지선 사이에서 브레이크를 먼저 밟은 뒤 우회전해요.'},
+ wobble:{t:4,title:'핸들 흔들지 않기',tpl:'road',goal:'가운데 차로를 벗어나지 말고 끝까지 가요.'},
+ seat_heat:{t:4,title:'히터 대신 열선',tpl:'road',free:true,goal:'운전 판정은 없어요. 자유롭게 끝까지 가요. (열선은 실제 차 공조에서 켜요)'},
+ manners:{t:4,title:'길 위 매너',tpl:'road',twoWay:true,free:true,goal:'판정 없는 자유 주행이에요. 차로를 지키며 끝까지 가요.'},
+ soft_stop:{t:4,title:'부드럽게 세우기',tpl:'road',stopLine:true,goal:'정지선 15m 앞(노란 선)부터 미리 브레이크를 밟아, 정지선 앞에 멈춰요.'},
+ bump:{t:4,title:'방지턱 살살 넘기',tpl:'road',bump:true,goal:'방지턱 앞에서 브레이크를 짧게 여러 번 밟아 속도를 줄이고 넘어가요.'}
+};
+const TIER_NAME={1:'1단계 · 안전 기본',2:'2단계 · 교차로·날씨',3:'3단계 · 고속도로',4:'4단계 · 운전 센스'};
+const IDS=Object.keys(MAPS);
+function show(){
+  const id=MAPS[location.hash.slice(1)]?location.hash.slice(1):IDS[0],m=MAPS[id],i=IDS.indexOf(id);
+  document.title=m.title;
+  ph.src='maps/'+id+'.jpg';ph.alt=m.title+' 연습 맵 사진';
+  eb.textContent='연습 맵 · '+TIER_NAME[m.t];ti.textContent=m.title;goal.textContent=m.goal;
+  prev.disabled=i===0;next.disabled=i===IDS.length-1;
+  prev.onclick=()=>{location.hash=IDS[i-1]};next.onclick=()=>{location.hash=IDS[i+1]};
+}
+addEventListener('hashchange',show);show();
+</script>
+</body>
+</html>
