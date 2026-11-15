@@ -22,17 +22,19 @@ h1{font-size:28px;margin:0}
 .btn{flex:1;border:0;border-radius:14px;padding:14px 10px;font-size:17px;font-weight:600;font-family:inherit;background:var(--bg);color:var(--tx)}
 .btn:disabled{opacity:.35}
 .btn:focus-visible{outline:3px solid var(--pr);outline-offset:2px}
+#view{position:relative}
+.tag{position:absolute;left:16px;bottom:16px;background:rgba(17,24,39,.82);color:#fff;font-size:15px;font-weight:600;line-height:1.45;border-radius:12px;padding:10px 14px;max-width:70%}
 </style>
 </head>
 <body>
 <div id="car">
-  <div id="view"><img id="ph" alt=""></div>
+  <div id="view"><img id="ph" alt=""><div class="tag">📷 3D 화면을 찍은 사진이에요 · 움직이는 3D는 3D 원본 APK와 웹(HTML)에서</div></div>
   <div class="side">
     <a class="back" href="cards.html" onclick="if(window.Android){Android.home();return false}">← 홈</a>
     <span class="eb" id="eb"></span>
     <h1 id="ti"></h1>
     <p class="goal" id="goal"></p>
-    <p class="note">사진으로 보는 연습 맵이에요. 실제 차에서 운전할 때 이 장면을 떠올려 보세요.</p>
+    <p class="note"><b>왜 사진인가요?</b> 에뮬레이터에서는 앱 안 3D가 크게 끊겨서, 심사·시연용 이 APK는 3D 맵을 사진으로 바꿨어요.<br>· 직접 운전하는 3D: <b>3D 원본 APK</b> (apk/동고동락_초보탈출학교_3D원본_release.apk)<br>· 설치 없이 체험: <b>웹 3D</b> (web/plan-school-parking-sim-3d.html, PC 크롬)</p>
     <div class="row"><button class="btn" id="prev">◀ 이전 맵</button><button class="btn" id="next">다음 맵 ▶</button></div>
   </div>
 </div>
